@@ -64,20 +64,36 @@ public class Bullet extends Entity {
 			}
 		}else {
 			if(wallUp && !wallRight && !wallLeft && !wallDown) {
-				System.out.println("baixo");
+				System.out.println("parede em cima");
 				return !World.isFree((int) (x - 12), (int) (y));
 			}
 			if(!wallUp && wallRight && !wallLeft && !wallDown) {
-				System.out.println("direita");
+				System.out.println("parede na direita");
 				return !World.isFree((int) (x -14), (int) (y));
 			}
 			if(!wallUp && !wallRight && wallLeft && !wallDown) {
-				System.out.println("esquerda");
+				System.out.println("parede na esquerda");
 				return !World.isFree((int) (x), (int) (y - 5));
 			}
 			if(!wallUp && !wallRight && !wallLeft && wallDown) {
-				System.out.println("baixo");
+				System.out.println("parede embaixo");
 				return !World.isFree((int) (x - 12), (int) (y - 12));
+			}
+			if(!wallUp && wallRight && !wallLeft && wallDown) {
+				System.out.println("parede embaixo e na direita");
+				return !World.isFree((int) (x - 15), (int) (y - 13));
+			}
+			if(!wallUp && !wallRight && wallLeft && wallDown) {
+				System.out.println("parede embaixo e na esquerda");
+				return !World.isFree((int) (x), (int) (y - 13));
+			}
+			if(wallUp && !wallRight && wallLeft && !wallDown) {
+				System.out.println("parede em cima e na esquerda");
+				return !World.isFree((int) (x), (int) (y));
+			}
+			if(wallUp && wallRight && !wallLeft && !wallDown) {
+				System.out.println("parede em cima e na direita");
+				return !World.isFree((int) (x - 16), (int) (y));
 			}
 		}
 

@@ -110,7 +110,7 @@ public class World {
 	public void tick() {
 		while (Game.enemies.size() < 10 && Game.frameEnemy > 60) {
 			Game.frameEnemy = 0;
-			//GenerateEnemys(Game.rand.nextInt(4) + 1);
+			GenerateEnemys(Game.rand.nextInt(4) + 1);
 		}
 	}
 

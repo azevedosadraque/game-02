@@ -130,7 +130,7 @@ public class Player extends Entity {
 		if (mouseShoot && hasGun && ammo > 0) {
 			if (Game.frameGun > 4) {
 				
-				//ammo--;
+				ammo--;
 				 
 				Game.frameGun = 0;
 
