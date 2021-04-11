@@ -45,22 +45,43 @@ public class Bullet extends Entity {
 		var p = Game.player;
 
 		detectWall();
+		
+		if(!wallUp && !wallDown && !wallRight && !wallLeft) {
+			if (p.mx > (Game.WIDTH / 2) && p.my > (Game.HEIGHT / 2)) {
+				return !World.isFree((int) (x - 12), (int) (y - 12));
+			}
 
-		if (p.mx > (Game.WIDTH / 2) && p.my > (Game.HEIGHT / 2)) {
-			return !World.isFree((int) (x - 12), (int) (y - 12));
+			if (p.mx < (Game.WIDTH / 2) && p.my > (Game.HEIGHT / 2)) {
+				return !World.isFree((int) (x), (int) (y - 12));
+			}
+
+			if (p.mx < (Game.WIDTH / 2) && p.my < (Game.HEIGHT / 2)) {
+				return !World.isFree((int) (x), (int) (y));
+			}
+
+			if (p.mx > (Game.WIDTH / 2) && p.my < (Game.HEIGHT / 2)) {
+				return !World.isFree((int) (x - 12), (int) (y));
+			}
+		}else {
+			if(wallUp && !wallRight && !wallLeft && !wallDown) {
+				System.out.println("baixo");
+				return !World.isFree((int) (x - 12), (int) (y));
+			}
+			if(!wallUp && wallRight && !wallLeft && !wallDown) {
+				System.out.println("direita");
+				return !World.isFree((int) (x -14), (int) (y));
+			}
+			if(!wallUp && !wallRight && wallLeft && !wallDown) {
+				System.out.println("esquerda");
+				return !World.isFree((int) (x), (int) (y - 5));
+			}
+			if(!wallUp && !wallRight && !wallLeft && wallDown) {
+				System.out.println("baixo");
+				return !World.isFree((int) (x - 12), (int) (y - 12));
+			}
 		}
 
-		if (p.mx < (Game.WIDTH / 2) && p.my > (Game.HEIGHT / 2)) {
-			return !World.isFree((int) (x), (int) (y - 12));
-		}
-
-		if (p.mx < (Game.WIDTH / 2) && p.my < (Game.HEIGHT / 2)) {
-			return !World.isFree((int) (x), (int) (y));
-		}
-
-		if (p.mx > (Game.WIDTH / 2) && p.my < (Game.HEIGHT / 2)) {
-			return !World.isFree((int) (x - 12), (int) (y));
-		}
+		
 		
 		return false;
 	}
