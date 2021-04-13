@@ -95,6 +95,14 @@ public class Bullet extends Entity {
 				System.out.println("parede em cima e na direita");
 				return !World.isFree((int) (x - 16), (int) (y));
 			}
+			if(!wallUp && wallRight && wallLeft && !wallDown) {
+				System.out.println("parede na esquerda e na direita");
+				return !World.isFree((int) (x), (int) (y));
+			}
+			if(wallUp && !wallRight && !wallLeft && wallDown) {
+				System.out.println("parede na esquerda e na direita");
+				return !World.isFree((int) (x), (int) (y));
+			}
 		}
 
 		
