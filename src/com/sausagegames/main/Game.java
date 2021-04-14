@@ -3,7 +3,9 @@ package com.sausagegames.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -47,17 +49,19 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static List<LifePack> lifePacks;
 	public static List<Ammo> ammos;
 	public static List<Bullet> bullets;
-	
+
 	public static Spritesheet spritesheet;
 	public static World world;
 	public static Player player;
 	public static Random rand;
-	
+
 	public static int enemiesDestroyed = 0;
 	public static int frameGun;
 	public static int frameEnemy;
 
 	public UI ui;
+
+	public static String gameState = "NORMAL";
 
 	public Game() {
 		rand = new Random();
@@ -72,14 +76,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	private void carregarMundo(String level) {
-		if(level != "inicio") {
+		if (level != "inicio") {
 			entities.clear();
 			enemies.clear();
 			lifePacks.clear();
 			ammos.clear();
-			bullets.clear();			
+			bullets.clear();
 		}
-		
+
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
@@ -90,18 +94,18 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		ui = new UI();
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
-		
-		if(level == "inicio") {
-			world = new World("/level1.png");	
-			//world = new World("/teste.png");	
-		}else {
-			world = new World(level);	
+
+		if (level == "inicio") {
+			world = new World("/level1.png");
+			// world = new World("/teste.png");
+		} else {
+			world = new World(level);
 		}
 
 		Player.life = 100;
 		Player.ammo = 0;
 		enemiesDestroyed = 0;
-		
+
 	}
 
 	private void initFrame() {
@@ -136,23 +140,27 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	public void tick() {
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
-			e.tick();
-		}
-		
-		if(enemiesDestroyed > 40) {
-			enemiesDestroyed = 0;
-			CURRENT_LEVEL++;
-			if(CURRENT_LEVEL > MAX_LEVEL) {
-				CURRENT_LEVEL = 1;
+		if (gameState == "NORMAL") {
+			for (int i = 0; i < entities.size(); i++) {
+				Entity e = entities.get(i);
+				e.tick();
 			}
-			String newWorld = "/level" + CURRENT_LEVEL + ".png";
-			carregarMundo(newWorld);
-		}
 
-		for (int i = 0; i < bullets.size(); i++) {
-			bullets.get(i).tick();
+			if (enemiesDestroyed > 40) {
+				enemiesDestroyed = 0;
+				CURRENT_LEVEL++;
+				if (CURRENT_LEVEL > MAX_LEVEL) {
+					CURRENT_LEVEL = 1;
+				}
+				String newWorld = "/level" + CURRENT_LEVEL + ".png";
+				carregarMundo(newWorld);
+			}
+
+			for (int i = 0; i < bullets.size(); i++) {
+				bullets.get(i).tick();
+			}
+		} else if (gameState == "GAME_OVER") {
+
 		}
 	}
 
@@ -186,6 +194,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+		
+		if(gameState == "GAME_OVER") {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor((new Color(0, 0, 0, 100)));
+			g2.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
+			g.setFont(new Font("arial", Font.BOLD, 28));
+			g.setColor(Color.white);
+			g.drawString("Game Over", ((WIDTH*SCALE)/2) - 50, (HEIGHT*SCALE)/2);
+		}
+		
 		bs.show();
 
 	}
@@ -203,9 +221,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		while (isRunning) {
 
 			if (Player.life == 0) {
-				carregarMundo("/level1.png");
+				gameState = "GAME_OVER";
 			}
-			
+
 			world.tick();
 
 			long now = System.nanoTime();
@@ -217,7 +235,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				render();
 				frames++;
 				delta--;
-				
+
 				frameGun++;
 				frameEnemy++;
 			}
@@ -227,12 +245,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				frames = 0;
 				timer += 1000;
 			}
-			
-			if(frameGun > 1000) {
+
+			if (frameGun > 1000) {
 				frameGun = 30;
 			}
-			
-			if(frameEnemy > 250) {
+
+			if (frameEnemy > 250) {
 				frameEnemy = 121;
 			}
 		}
@@ -291,34 +309,34 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		player.mouseShoot = true;
-		
+
 		player.mx = (e.getX() / 3);
 		player.my = (e.getY() / 3);
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		player.mouseShoot = false;
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
