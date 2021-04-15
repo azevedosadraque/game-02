@@ -38,7 +38,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean isRunning = true;
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
-	private final int SCALE = 3;
+	public static final int SCALE = 3;
 
 	private int CURRENT_LEVEL = 1;
 	private int MAX_LEVEL = 2;
@@ -63,7 +63,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public UI ui;
 
-	public static String gameState = "NORMAL";
+	public static String gameState = "MENU";
+	
+	public Menu menu;
 
 	public Game() {
 		rand = new Random();
@@ -72,6 +74,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		addMouseMotionListener(this);
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
+		
+		menu = new Menu();
+	
 
 		carregarMundo("inicio");
 
@@ -167,6 +172,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				restartGame = false;
 				carregarMundo("/level1.png");
 			}
+		}else if(gameState == "MENU") {
+			menu.tick();
 		}
 	}
 
@@ -215,6 +222,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			if (frameMessage < 30) {
 				g.drawString("> Pressione Enter para reiniciar <", ((WIDTH * SCALE) / 2) - 210,
 						((HEIGHT * SCALE) / 2) + 45);
+			}else if(gameState == "MENU") {
+				menu.render(g);
 			}
 		}
 		
