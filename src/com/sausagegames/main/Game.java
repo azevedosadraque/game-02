@@ -222,9 +222,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			if (frameMessage < 30) {
 				g.drawString("> Pressione Enter para reiniciar <", ((WIDTH * SCALE) / 2) - 210,
 						((HEIGHT * SCALE) / 2) + 45);
-			}else if(gameState == "MENU") {
-				menu.render(g);
 			}
+		}else if(gameState == "MENU") {
+			menu.render(g);
 		}
 		
 		bs.show();
