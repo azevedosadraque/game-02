@@ -58,6 +58,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static int enemiesDestroyed = 0;
 	public static int frameGun;
 	public static int frameEnemy;
+	public static int frameMessage;
+	public static boolean restartGame = false;
 
 	public UI ui;
 
@@ -160,7 +162,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				bullets.get(i).tick();
 			}
 		} else if (gameState == "GAME_OVER") {
-
+			if(restartGame) {
+				gameState = "NORMAL";
+				restartGame = false;
+				carregarMundo("/level1.png");
+			}
 		}
 	}
 
@@ -194,14 +200,22 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
-		
-		if(gameState == "GAME_OVER") {
+
+		if (gameState == "GAME_OVER") {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setColor((new Color(0, 0, 0, 100)));
-			g2.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
+			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+			g.setFont(new Font("arial", Font.BOLD, 36));
+			g.setColor(Color.white);
+			g.drawString("Game Over", ((WIDTH * SCALE) / 2) - 95, (HEIGHT * SCALE) / 2);
 			g.setFont(new Font("arial", Font.BOLD, 28));
 			g.setColor(Color.white);
-			g.drawString("Game Over", ((WIDTH*SCALE)/2) - 50, (HEIGHT*SCALE)/2);
+			System.out.println(frameMessage);
+			frameMessage = frameMessage > 60? 0 : frameMessage;
+			if (frameMessage < 30) {
+				g.drawString("> Pressione Enter para reiniciar <", ((WIDTH * SCALE) / 2) - 210,
+						((HEIGHT * SCALE) / 2) + 45);
+			}
 		}
 		
 		bs.show();
@@ -238,10 +252,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 				frameGun++;
 				frameEnemy++;
+				frameMessage++;
 			}
 
 			if (System.currentTimeMillis() - timer >= 1000) {
-				System.out.println("FPS 	" + frames);
+				//System.out.println("FPS 	" + frames);
 				frames = 0;
 				timer += 1000;
 			}
@@ -281,6 +296,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 		if (e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = true;
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			restartGame = true;
 		}
 
 	}
