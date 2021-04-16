@@ -60,6 +60,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static int frameEnemy;
 	public static int frameMessage;
 	public static boolean restartGame = false;
+	public static int frameMenu;
 
 	public UI ui;
 
@@ -241,6 +242,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		requestFocus();
 		frameGun = 0;
 		frameEnemy = 0;
+		frameMenu = 0;
 		while (isRunning) {
 
 			if (Player.life == 0) {
@@ -262,6 +264,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				frameGun++;
 				frameEnemy++;
 				frameMessage++;
+				frameMenu++;
 			}
 
 			if (System.currentTimeMillis() - timer >= 1000) {
@@ -276,6 +279,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 			if (frameEnemy > 250) {
 				frameEnemy = 121;
+			}
+			
+			if (gameState == "MENU") {
+				frameMenu = frameMenu > 1000 ? frameMenu = 100 : frameMenu++;
 			}
 		}
 
@@ -299,8 +306,17 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			player.up = true;
+			
+			if(gameState == "MENU") {
+				menu.up = true;
+			}
+			
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
+			
+			if(gameState == "MENU") {
+				menu.down = true;
+			}
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_X) {
@@ -309,6 +325,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			restartGame = true;
+			
+			if(gameState == "MENU") {
+				gameState = "NORMAL";
+			}
 		}
 
 	}
@@ -324,8 +344,17 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			player.up = false;
+			
+			if(gameState == "MENU") {
+				menu.up = false;
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = false;
+			
+			if(gameState == "MENU") {
+				menu.down = false;
+				System.out.println(menu.down);
+			}
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_X) {
