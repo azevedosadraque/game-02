@@ -134,7 +134,7 @@ public class World {
 		default:
 			en = new Enemy(16, 16, 16, 16, Entity.ENEMY_EN);
 		}
-		
+
 		en.setCanMove(true);
 		Game.entities.add(en);
 		Game.enemies.add(en);

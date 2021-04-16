@@ -15,6 +15,8 @@ public class Menu {
 	
 	private List<OptionsMenu> options = new LinkedList<OptionsMenu>();
 	private int maxOption;
+
+	public boolean enterPressed;
 	
 	public Menu() {
 		ConfiguraOptionMenu();
@@ -35,6 +37,10 @@ public class Menu {
 				currentOption = 0;
 			}
 			Game.frameMenu = 0;
+		}
+		if(enterPressed) {
+			enterPressed = false;
+			SelecionarAcaoMenu();
 		}
 	}
 
@@ -72,6 +78,18 @@ public class Menu {
 		options.add(optionExit);
 		
 		maxOption = options.size() - 1;
+		
+	}
+
+	private void SelecionarAcaoMenu() {
+		
+		if(currentOption == 0) {
+			Game.gameState = "NORMAL";
+		} else if(currentOption == 1) {
+			System.out.println("Carregando...");
+		} else if( currentOption == 2) {
+			System.exit(1);
+		}
 		
 	}
 }
