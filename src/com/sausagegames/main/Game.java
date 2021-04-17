@@ -106,8 +106,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		entities.add(player);
 
 		if (level == "inicio") {
-			world = new World("/level1.png");
-			// world = new World("/teste.png");
+			//world = new World("/level1.png");
+			world = new World("/teste.png");
 		} else {
 			world = new World(level);
 		}
