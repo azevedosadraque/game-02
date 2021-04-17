@@ -252,7 +252,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		while (isRunning) {
 
 			if (Player.life == 0) {
-				Sound.ouchDeathPlayer.play();
 				gameState = "GAME_OVER";
 			}
 
@@ -331,7 +330,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}
 		
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			restartGame = true;
+			if(gameState == "GAME_OVER") {				
+				restartGame = true;
+			}
 			
 			if(gameState == "MENU") {
 				menu.enterPressed = true;;

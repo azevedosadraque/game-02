@@ -12,7 +12,7 @@ import com.sausagegames.world.World;
 
 public class Enemy extends Entity {
 
-	private double speed = 0.75;
+	private double speed = 0.85;
 
 	private int maskX = 8;
 	private int maskY = 8;
@@ -24,7 +24,7 @@ public class Enemy extends Entity {
 	private int index = 0;
 	private int maxIndex = 2;
 
-	private final double VISION = 80;
+	private final double VISION = 100;
 	private boolean canMove = false;
 
 	public BufferedImage[] sprites;
@@ -69,6 +69,9 @@ public class Enemy extends Entity {
 			if (Game.rand.nextInt(100) < 15) {
 				Player.life = ((Player.life -= 2) < 1) ? 0 : (Player.life -= 2);
 				Game.player.isDamaged = true;
+				if(Player.life == 0) {
+					Sound.ouchDeathPlayer.play();
+				}
 			}
 		}
 
