@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.sausagegames.sounds.Sound;
+
 public class Menu {
 	
 	public int currentOption = 0;
@@ -20,10 +22,13 @@ public class Menu {
 	
 	public Menu() {
 		ConfiguraOptionMenu();
+
+		Sound.menu.loop();
 	}
 	
 	public void tick() {
 		if(up && Game.frameMenu > 15) {
+			Sound.menuOption.play();
 			currentOption--;
 			if(currentOption < 0) {
 				currentOption = maxOption;
@@ -32,6 +37,7 @@ public class Menu {
 			
 		}
 		if(down && Game.frameMenu > 15) {
+			Sound.menuOption.play();
 			currentOption++;
 			if(currentOption > maxOption) {
 				currentOption = 0;
@@ -85,6 +91,10 @@ public class Menu {
 		
 		if(currentOption == 0) {
 			Game.gameState = "NORMAL";
+
+			Sound.menu.stop();
+			Sound.music.loop();
+			
 		} else if(currentOption == 1) {
 			System.out.println("Carregando...");
 		} else if( currentOption == 2) {

@@ -27,6 +27,7 @@ import com.sausagegames.entities.LifePack;
 import com.sausagegames.entities.Player;
 import com.sausagegames.graficos.Spritesheet;
 import com.sausagegames.graficos.UI;
+import com.sausagegames.sounds.Sound;
 import com.sausagegames.world.Camera;
 import com.sausagegames.world.World;
 
@@ -106,8 +107,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		entities.add(player);
 
 		if (level == "inicio") {
-			//world = new World("/level1.png");
-			world = new World("/teste.png");
+			world = new World("/level1.png");
+			//world = new World("/teste.png");
 		} else {
 			world = new World(level);
 		}
@@ -251,6 +252,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		while (isRunning) {
 
 			if (Player.life == 0) {
+				Sound.ouchDeathPlayer.play();
 				gameState = "GAME_OVER";
 			}
 
@@ -339,8 +341,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			if(gameState == "NORMAL") {
 				gameState = "PAUSE";
+				Sound.music.stop();
 			} else if(gameState == "PAUSE") {
 				gameState = "NORMAL";
+				Sound.music.loop();
 			}
 		}
 

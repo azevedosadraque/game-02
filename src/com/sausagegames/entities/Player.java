@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import com.sausagegames.main.Game;
+import com.sausagegames.sounds.Sound;
 import com.sausagegames.world.Camera;
 import com.sausagegames.world.World;
 
@@ -131,6 +132,8 @@ public class Player extends Entity {
 			if (Game.frameGun > 4) {
 				
 				ammo--;
+				
+				Sound.bullet.play();
 				 
 				Game.frameGun = 0;
 
@@ -188,6 +191,7 @@ public class Player extends Entity {
 				}
 			}
 		} else {
+			Sound.pain.play();
 			g.drawImage(playerDamage, (int) this.getX() - Camera.x, (int) this.getY() - Camera.y, null);
 			isDamaged = false;
 		}
@@ -197,6 +201,7 @@ public class Player extends Entity {
 		for (int i = 0; i < Game.ammos.size(); i++) {
 			var atual = Game.ammos.get(i);
 			if (Entity.isColliding(this, atual)) {
+				Sound.ammo.play();
 				ammo += 100;
 				Game.ammos.remove(atual);
 				Game.entities.remove(atual);
@@ -209,6 +214,7 @@ public class Player extends Entity {
 			var atual = Game.entities.get(i);
 			if (atual instanceof Weapon) {
 				if (Entity.isColliding(this, atual)) {
+					Sound.yeah.play();
 					hasGun = true;
 					Game.entities.remove(atual);
 				}
@@ -220,6 +226,7 @@ public class Player extends Entity {
 		for (int i = 0; i < Game.lifePacks.size(); i++) {
 			var atual = Game.lifePacks.get(i);
 			if (Entity.isColliding(this, atual)) {
+				Sound.healthPack.play();
 				life = (life + 25) > 99 ? 100 : life + 25;
 				Game.lifePacks.remove(atual);
 				Game.entities.remove(atual);

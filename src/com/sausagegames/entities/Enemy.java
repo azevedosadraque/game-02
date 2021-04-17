@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.sausagegames.main.Game;
+import com.sausagegames.sounds.Sound;
 import com.sausagegames.world.Camera;
 import com.sausagegames.world.World;
 
@@ -92,6 +93,7 @@ public class Enemy extends Entity {
 			sprites[0] = Game.spritesheet.getSprite(96, 48 + 32, 16, 16);
 			sprites[1] = Game.spritesheet.getSprite(112, 48 + 32, 16, 16);
 		} else if (life < 1) {
+			Sound.enemyDeath.play();
 			Game.enemies.remove(this);
 			Game.entities.remove(this);
 			Game.enemiesDestroyed++;
@@ -135,7 +137,9 @@ public class Enemy extends Entity {
 			if (Entity.isColliding(this, e)) {
 
 				life -= 5;
-
+				
+				Sound.enemyImpact.play();
+				
 				Game.bullets.remove(e);
 				return;
 			}
